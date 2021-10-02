@@ -59,7 +59,6 @@ exports.index = function(req, res) {
             });
         }
 
-        res.header("Access-Control-Allow-Origin", "*")
         return res.json({
             status: "success",
             message: "Candidate Added Successfully",
