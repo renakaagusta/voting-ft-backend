@@ -1,3 +1,5 @@
+const mongoose = require("mongoose");
+
 // Import Participant model
 Participant = require("../model/participantModel");
 Session = require("../model/sessionModel");
@@ -106,7 +108,10 @@ exports.indexByPage = async function(req, res) {
 
 // Handle view actions
 exports.view = function(req, res) {
-    Participant.findById(req.params.id, function(err, participant) {
+    const id = mongoose.Types.ObjectId('6156ea00bd1e52132cadac7a')
+    Participant.findById(id, function(err, participant) {
+        console.log(req.params.id)
+        console.log(participant)
         if (err) return res.send(err);
         return res.json({
             message: "participants Detail Loading...",
