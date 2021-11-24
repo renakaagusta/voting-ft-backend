@@ -53,26 +53,26 @@ exports.send = function(req, res) {
             port: 465,
             secure: true,
             auth: {
-                user: setting.email.email,
-                pass: setting.email.password,
+                user: "renakaagusta28@gmail.com",
+                pass: "@Renaka28",
             },
         });
 
         var mailOptions = {
             from: setting.email.email,
             to: req.body.to,
-            subject: "PEMIRA FIB UNS 2021",
+            subject: "PEMIRA HIMATIPA UGM 2021",
             html: "<h1>Halo " +
                 req.body.name +
-                "</h1><p>Kami mengundang anda untuk mengikuti PEMIRA FIB UNS 2021. Berikut kami lampirkan kartu pemilihan anda beserta dengan tata cara pemilihan.</p>",
+                "</h1><p>Kami mengundang anda untuk mengikuti PEMIRA HIMATIPA UGM 2021. Berikut kami lampirkan kartu pemilihan anda beserta dengan tata cara pemilihan.</p>",
             attachments: [{
                     filename: "Kartu Pemilihan_" + req.body.name + "_" + req.body.nim + ".png",
                     content: votingCardImage,
                 },
                 {
-                    filename: "Tata Cara Pemilihan PEMIRA FIB UNS 2021.pdf",
+                    filename: "Tata Cara Pemilihan PEMIRA HIMATIPA UGM 2021.pdf",
                     contentType: "application/pdf",
-                    path: "http://localhost/procedure.pdf",
+                    path: "https://voting-fib-backend.herokuapp.com//procedure.pdf",
                 },
             ],
         };

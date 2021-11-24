@@ -5,7 +5,7 @@ var multer = require("multer");
 var path = require("path");
 
 const storage = multer.diskStorage({
-    destination: path.join(__dirname + "./../../"),
+    destination: path.join(__dirname + "./../public"),
     filename: function(req, file, cb) {
         console.log(file.originalname);
         cb(null, "procedure.pdf");
@@ -139,6 +139,8 @@ exports.update = function(req, res) {
 exports.upload = function(req, res) {
 
     upload(req, res, (err) => {
+        console.log("..err")
+        console.log(err)
         if (err) throw err;
 
         res.json({
