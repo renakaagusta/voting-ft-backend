@@ -108,7 +108,7 @@ exports.indexByPage = async function(req, res) {
 
 // Handle view actions
 exports.view = function(req, res) {
-    const id = mongoose.Types.ObjectId('6156ea00bd1e52132cadac7a')
+    const id = mongoose.Types.ObjectId(req.params.id)
     Participant.findById(id, function(err, participant) {
         console.log(req.params.id)
         console.log(participant)
@@ -145,7 +145,7 @@ exports.new = function(req, res) {
         console.log("..err2");
         console.log(err)
             if (err) return res.status(500).json(err);
-            console.log("..err3");
+            
             console.log(err)
             session.total_participant++;
             Session.findOneAndUpdate({ _id: session._id }, { $set: session }).then(

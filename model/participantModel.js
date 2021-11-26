@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
 var participantSchema = mongoose.Schema({
-    _id: {
+    /*_id: {
         type: String,
-    },
+    },*/
     name: {
         type: String,
         required: true
