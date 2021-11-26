@@ -137,8 +137,16 @@ exports.new = function(req, res) {
     participant.save(function(err) {
         if (err) return res.status(500).json(err);
 
+        console.log("..err");
+        console.log(err)
+
         Session.findById(req.body.sessionId, function(err, session) {
+            
+        console.log("..err2");
+        console.log(err)
             if (err) return res.status(500).json(err);
+            console.log("..err3");
+            console.log(err)
             session.total_participant++;
             Session.findOneAndUpdate({ _id: session._id }, { $set: session }).then(
                 (session) => {
