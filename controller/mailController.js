@@ -53,8 +53,8 @@ exports.send = function(req, res) {
             port: 465,
             secure: true,
             auth: {
-                user: "renakaagusta28@gmail.com",
-                pass: "@Renaka28",
+                user: "exsternalpemirahimatipa@gmail.com",
+                pass: "Pemiraexsternal21*",
             },
         });
 
