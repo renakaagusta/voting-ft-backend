@@ -59,6 +59,10 @@ exports.index = function(req, res) {
     console.log("..clientIp")
     console.log(clientIP)
     Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
         if(client) {
 
             Candidate.get(function(err, candidates) {
