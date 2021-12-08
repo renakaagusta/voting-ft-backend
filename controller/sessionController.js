@@ -50,6 +50,18 @@ exports.index = function (req, res) {
 // Handle create actions
 exports.new = function (req, res) {
   
+  const clientIP = 
+  req.headers['x-forwarded-for'] ||
+  req.socket.remoteAddress ||
+  null;
+  console.log("..clientIp")
+  console.log(clientIP)
+  Ip.find({ip: clientIP}, function(err, client){
+      console.log("..err")
+      console.log(err)
+      console.log("..client")
+      console.log(client)
+      if(client.length > 0) {
   var session = new Session();
   session.number = req.body.number;
   session.start = new Date(req.body.start);
@@ -62,23 +74,48 @@ exports.new = function (req, res) {
       message: "New Session Created!",
       data: session,
     });
-  });
+  });}})
 };
 
 // Handle view actions
 exports.view = function (req, res) {
+  
+  const clientIP = 
+  req.headers['x-forwarded-for'] ||
+  req.socket.remoteAddress ||
+  null;
+  console.log("..clientIp")
+  console.log(clientIP)
+  Ip.find({ip: clientIP}, function(err, client){
+      console.log("..err")
+      console.log(err)
+      console.log("..client")
+      console.log(client)
+      if(client.length > 0) {
   Session.findById(req.params.id, function (err, session) {
     if (err) res.send(err);
     res.json({
       message: "sessions Detail Loading...",
       data: session,
     });
-  });
+  });}})
 };
 
 // Handle update actions
 exports.update = function (req, res) {
   
+  const clientIP = 
+  req.headers['x-forwarded-for'] ||
+  req.socket.remoteAddress ||
+  null;
+  console.log("..clientIp")
+  console.log(clientIP)
+  Ip.find({ip: clientIP}, function(err, client){
+      console.log("..err")
+      console.log(err)
+      console.log("..client")
+      console.log(client)
+      if(client.length > 0) {
   Session.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -123,12 +160,24 @@ exports.update = function (req, res) {
         message: "error",
         data: err,
       });
-    });
+    });}})
 };
 
 // Handle delete actions
 exports.delete = function (req, res) {
   
+  const clientIP = 
+  req.headers['x-forwarded-for'] ||
+  req.socket.remoteAddress ||
+  null;
+  console.log("..clientIp")
+  console.log(clientIP)
+  Ip.find({ip: clientIP}, function(err, client){
+      console.log("..err")
+      console.log(err)
+      console.log("..client")
+      console.log(client)
+      if(client.length > 0) {
   Session.remove(
     {
       _id: req.params.id,
@@ -140,5 +189,5 @@ exports.delete = function (req, res) {
         message: "Session Deleted!",
       });
     }
-  );
+  );}})
 };

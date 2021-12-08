@@ -33,6 +33,18 @@ var ip = [
 // Handle index actions
 exports.send = function (req, res) {
 
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
     Setting.get(function (err, settings) {
         if (err) {
             res.json({
@@ -94,5 +106,5 @@ exports.send = function (req, res) {
                 }
             );
         });
-    });
+    });}})
 };

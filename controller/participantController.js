@@ -45,6 +45,8 @@ exports.index = function (req, res) {
 
         participants = [].concat(participants).reverse();
 
+        participants.forEach(function(participant){ delete participant.code });
+
         return res.json({
             status: "success",
             message: "Participant Added Successfully",
@@ -57,6 +59,18 @@ exports.index = function (req, res) {
 exports.search = function (req, res) {
 
 
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
     Participant.find({
         name: {
             $regex: req.params.name,
@@ -78,11 +92,24 @@ exports.search = function (req, res) {
                 data: participants,
             });
         }
-    );
+    );}})
 };
 
 // Handle index actions
 exports.indexByPage = async function (req, res) {
+    
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
     var page = req.params.page;
     try {
         var totalParticipant = await Participant.count();
@@ -102,7 +129,7 @@ exports.indexByPage = async function (req, res) {
         });
     } catch (err) {
         return res.send(err);
-    }
+    }}})
 };
 
 function escapeRegExp(string) {
@@ -116,16 +143,30 @@ function escapeRegExp(string) {
 exports.view = function (req, res) {
     console.log(req.params.id.length)
     if (req.params.id.length < 30) {
+        
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
         const id = mongoose.Types.ObjectId(req.params.id)
         Participant.findById(id, function (err, participant) {
             console.log(req.params.id)
             console.log(participant)
+            delete participant.code
             if (err) return res.send(err);
             return res.json({
                 message: "participants Detail Loading...",
                 data: participant,
             });
-        });
+        });}})
     } else {
         const chipertext = replaceAll(req.params.id.toString(),"8---8", '/')
         const email = CryptoJS.AES.decrypt(chipertext, "voting-sv-okeoke").toString(CryptoJS.enc.Utf8);
@@ -134,6 +175,7 @@ exports.view = function (req, res) {
         }, function (err, participant) {
             console.log(req.params.id)
             console.log(participant)
+            delete participant.code
             if (err) return res.send(err);
             return res.json({
                 message: "participants Detail Loading...",
@@ -145,6 +187,19 @@ exports.view = function (req, res) {
 
 // Handle create actions
 exports.new = function (req, res) {
+    
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
     var participant = new Participant();
     participant.name = req.body.name;
     participant.nim = req.body.nim;
@@ -183,12 +238,24 @@ exports.new = function (req, res) {
             message: "New Participant Created!",
             data: participant,
         });
-    });
+    });}})
 };
 
 // Handle update actions
 exports.update = function (req, res) {
 
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
     var moveSession = false;
     var oldSession = {};
     var newSession = {};
@@ -254,7 +321,7 @@ exports.update = function (req, res) {
                 message: "error",
                 data: err,
             });
-        });
+        });}})
 };
 
 // Handle vote actions

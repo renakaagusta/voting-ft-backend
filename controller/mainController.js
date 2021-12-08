@@ -5,6 +5,18 @@ Session = require("../model/sessionModel");
 
 // Handle login actions
 exports.login = function(req, res) {
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
     console.log(req.body)
     Setting.find({
             "authentication.username": req.body.username,
@@ -23,7 +35,7 @@ exports.login = function(req, res) {
                 });
             }
         }
-    );
+    );}})
 };
 
 // Handle announcement actions

@@ -46,12 +46,18 @@ var ip = [
 
 // Handle index actions
 exports.index = function(req, res) {
-    /*if (!ip.includes(req.ip.replace("::ffff:", ""))) {
-      console.log(req.ip.replace("::ffff:", ""));
-
-      return res.status(500).send();
-    }*/
-
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
     console.log("ip: " + JSON.stringify(ip));
     Setting.get(function(err, settings) {
         if (err) {
@@ -65,11 +71,23 @@ exports.index = function(req, res) {
             message: "Setting Added Successfully",
             data: settings,
         });
-    });
+    });}})
 };
 
 // Handle create actions
 exports.new = function(req, res) {
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
     var setting = new Setting();
     setting.email.email = req.body.emailEmail;
     setting.email.password = req.body.emailPassword;
@@ -87,19 +105,31 @@ exports.new = function(req, res) {
             message: "New Setting Created!",
             data: setting,
         });
-    });
+    });}})
 };
 
 // Handle view actions
 exports.view = function(req, res) {
 
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
     Setting.findById(req.params.id, function(err, setting) {
         if (err) res.send(err);
         res.json({
             message: "settings Detail Loading...",
             data: setting,
         });
-    });
+    });}})
 };
 
 // Handle update actions
