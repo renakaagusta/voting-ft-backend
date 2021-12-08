@@ -259,6 +259,8 @@ exports.update = function (req, res) {
 
 // Handle vote actions
 exports.vote = function (req, res) {
+    console.log("..req")
+    console.log(req.body)
     Participant.findOneAndUpdate({ _id: req.body.id_participant }, {
         $set: {
             "voting.id_candidate_bem": req.body.id_candidate_bem,
@@ -267,13 +269,19 @@ exports.vote = function (req, res) {
             "voting.counted": 0,
         },
     })
-        .then((participant) => {
+        .then((participant, err) => {
+            console.log("..participant")
+            console.log(participant)
+            console.log("..err")
+            console.log(err)
             if (participant) {
                 return res.json({
                     message: "participant voted",
                     data: participant,
                 });
             } else {
+                console.log("..err")
+                console.log(err)
                 return res.json({
                     message: "participant not found",
                     data: {},
@@ -281,6 +289,8 @@ exports.vote = function (req, res) {
             }
         })
         .catch((err) => {
+            console.log("..err")
+            console.log(err)
             return res.json({
                 message: "error",
                 data: err,

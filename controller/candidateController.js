@@ -1,5 +1,6 @@
 // Import Candidate model
 Candidate = require("../model/candidateModel");
+Ip = require("../model/ipModel");
 
 var multer = require("multer");
 var path = require("path");
@@ -51,6 +52,16 @@ const upload = multer({
 
 // Handle index actions
 exports.index = function(req, res) {
+    
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log(clientIP)
+    Ip.find({ip: clientIp}, function(err, client){
+        console.log("..ip")
+        console.log(client)
+    })
     Candidate.get(function(err, candidates) {
         if (err) {
             return res.json({
