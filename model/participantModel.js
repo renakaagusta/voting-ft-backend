@@ -6,11 +6,15 @@ var participantSchema = mongoose.Schema({
     },*/
     name: {
         type: String,
-        required: true
+        
     },
     nim: {
         type: String,
-        required: true
+        
+    },
+    code: {
+        type: String,
+        
     },
     email: {
         type: String,

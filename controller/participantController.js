@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 // Import Participant model
 Participant = require("../model/participantModel");
 Session = require("../model/sessionModel");
+var CryptoJS = require("crypto-js");
 
 var ip = [
     "36.81.8.39",
@@ -33,8 +34,8 @@ var ip = [
 ];
 
 // Handle index actions
-exports.index = function(req, res) {
-    Participant.get(function(err, participants) {
+exports.index = function (req, res) {
+    Participant.get(function (err, participants) {
         if (err) {
             return res.json({
                 status: "error",
@@ -53,15 +54,15 @@ exports.index = function(req, res) {
 };
 
 // Handle search actions
-exports.search = function(req, res) {
+exports.search = function (req, res) {
 
 
     Participant.find({
-            name: {
-                $regex: req.params.name,
-            },
+        name: {
+            $regex: req.params.name,
         },
-        function(err, participants) {
+    },
+        function (err, participants) {
             if (err) {
                 return res.json({
                     status: "error",
@@ -81,9 +82,7 @@ exports.search = function(req, res) {
 };
 
 // Handle index actions
-exports.indexByPage = async function(req, res) {
-
-
+exports.indexByPage = async function (req, res) {
     var page = req.params.page;
     try {
         var totalParticipant = await Participant.count();
@@ -106,51 +105,76 @@ exports.indexByPage = async function(req, res) {
     }
 };
 
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); // $& means the whole matched string
+  }
+  function replaceAll(str, match, replacement){
+     return str.replace(new RegExp(escapeRegExp(match), 'g'), ()=>replacement);
+  }
+
 // Handle view actions
-exports.view = function(req, res) {
-    const id = mongoose.Types.ObjectId(req.params.id)
-    Participant.findById(id, function(err, participant) {
-        console.log(req.params.id)
-        console.log(participant)
-        if (err) return res.send(err);
-        return res.json({
-            message: "participants Detail Loading...",
-            data: participant,
+exports.view = function (req, res) {
+    if (req.params.id.length < 50) {
+        console.log("..oops")
+        const id = mongoose.Types.ObjectId(req.params.id)
+        Participant.findById(id, function (err, participant) {
+            console.log(req.params.id)
+            console.log(participant)
+            if (err) return res.send(err);
+            return res.json({
+                message: "participants Detail Loading...",
+                data: participant,
+            });
         });
-    });
+    } else {
+        const chipertext = replaceAll(req.params.id.toString(),"8---8", '/')
+        const email = CryptoJS.AES.decrypt(chipertext, "voting-sv-okeoke").toString(CryptoJS.enc.Utf8);
+        Participant.findOne({
+            'email': email
+        }, function (err, participant) {
+            console.log(req.params.id)
+            console.log(participant)
+            if (err) return res.send(err);
+            return res.json({
+                message: "participants Detail Loading...",
+                data: participant,
+            });
+        });
+    }
 };
 
 // Handle create actions
-exports.new = function(req, res) {
-
-
+exports.new = function (req, res) {
     var participant = new Participant();
     participant.name = req.body.name;
     participant.nim = req.body.nim;
     participant.email = req.body.email;
+    participant.code = CryptoJS.AES.encrypt(req.body.email, "voting-sv-okeoke").toString();
+    participant.code = replaceAll(participant.code, '/', '8---8');
+    participant.subject = req.body.subject ? req.body.subject : '1';
     participant.session.id = req.body.sessionId;
     participant.session.number = req.body.sessionNumber;
     participant.session.min = new Date(req.body.sessionMin);
     participant.session.max = new Date(req.body.sessionMax);
 
     // Save and validate
-    participant.save(function(err) {
-        if (err) return res.status(500).json(err);
-
+    participant.save(function (err) {
         console.log("..err");
         console.log(err)
+        if (err) return res.status(500).json(err);
 
-        Session.findById(req.body.sessionId, function(err, session) {
-            
-        console.log("..err2");
-        console.log(err)
+
+        Session.findById(req.body.sessionId, function (err, session) {
+
+            console.log("..err2");
+            console.log(err)
             if (err) return res.status(500).json(err);
-            
+
             console.log(err)
             session.total_participant++;
             Session.findOneAndUpdate({ _id: session._id }, { $set: session }).then(
                 (session) => {
-                    if (session) {} else {}
+                    if (session) { } else { }
                 }
             );
         });
@@ -163,13 +187,13 @@ exports.new = function(req, res) {
 };
 
 // Handle update actions
-exports.update = function(req, res) {
+exports.update = function (req, res) {
 
     var moveSession = false;
     var oldSession = {};
     var newSession = {};
 
-    Participant.findById(req.params.id, function(err, participant) {
+    Participant.findById(req.params.id, function (err, participant) {
         if (err) throw err;
         if (participant.session.id != req.body.sessionId) {
             moveSession = true;
@@ -184,32 +208,32 @@ exports.update = function(req, res) {
     });
 
     Participant.findOneAndUpdate({ _id: req.params.id }, {
-            $set: {
-                name: req.body.name,
-                nim: req.body.nim,
-                email: req.body.email,
-                "session.id": req.body.sessionId,
-                "session.number": req.body.sessionNumber,
-                "session.min": new Date(req.body.sessionMin),
-                "session.max": new Date(req.body.sessionMax),
-            },
-        })
+        $set: {
+            name: req.body.name,
+            nim: req.body.nim,
+            email: req.body.email,
+            "session.id": req.body.sessionId,
+            "session.number": req.body.sessionNumber,
+            "session.min": new Date(req.body.sessionMin),
+            "session.max": new Date(req.body.sessionMax),
+        },
+    })
         .then((participant) => {
             if (participant) {
                 if (moveSession) {
-                    Session.findById(newSession.id, function(err, session) {
+                    Session.findById(newSession.id, function (err, session) {
                         if (err) throw err;
                         session.total_participant++;
                         Session.findOneAndUpdate({ _id: session._id }, { $set: session }).then((session) => {
-                            if (session) {} else {}
+                            if (session) { } else { }
                         });
                     });
 
-                    Session.findById(oldSession.id, function(err, session) {
+                    Session.findById(oldSession.id, function (err, session) {
                         if (err) throw err;
                         session.total_participant--;
                         Session.findOneAndUpdate({ _id: session._id }, { $set: session }).then((session) => {
-                            if (session) {} else {}
+                            if (session) { } else { }
                         });
                     });
                 }
@@ -234,15 +258,15 @@ exports.update = function(req, res) {
 };
 
 // Handle vote actions
-exports.vote = function(req, res) {
+exports.vote = function (req, res) {
     Participant.findOneAndUpdate({ _id: req.body.id_participant }, {
-            $set: {
-                "voting.id_candidate_bem": req.body.id_candidate_bem,
-                "voting.id_candidate_legislatif": req.body.id_candidate_legislatif,
-                "voting.time": Date(),
-                "voting.counted": 0,
-            },
-        })
+        $set: {
+            "voting.id_candidate_bem": req.body.id_candidate_bem,
+            "voting.id_candidate_legislatif": req.body.id_candidate_legislatif,
+            "voting.time": Date(),
+            "voting.counted": 0,
+        },
+    })
         .then((participant) => {
             if (participant) {
                 return res.json({
@@ -265,13 +289,13 @@ exports.vote = function(req, res) {
 };
 
 // Handle delete actions
-exports.delete = function(req, res) {
+exports.delete = function (req, res) {
 
 
-    Participant.findById(req.params.id, function(err, participant) {
+    Participant.findById(req.params.id, function (err, participant) {
         if (err) return res.send(err);
 
-        Session.findById(participant.session.id, function(err, session) {
+        Session.findById(participant.session.id, function (err, session) {
             if (err) throw err;
             session.total_participant--;
             console.log("sessions id:" + session._id);
@@ -279,9 +303,9 @@ exports.delete = function(req, res) {
                 (session) => {
                     if (session) {
                         Participant.deleteOne({
-                                _id: req.params.id,
-                            },
-                            function(err, participant) {
+                            _id: req.params.id,
+                        },
+                            function (err, participant) {
                                 if (err) res.send(err);
 
                                 return res.json({
@@ -290,7 +314,7 @@ exports.delete = function(req, res) {
                                 });
                             }
                         );
-                    } else {}
+                    } else { }
                 }
             );
         });
@@ -298,12 +322,12 @@ exports.delete = function(req, res) {
 };
 
 // Handle delete actions
-exports.force_delete = function(req, res) {
+exports.force_delete = function (req, res) {
 
     Participant.deleteOne({
-            _id: req.params.id,
-        },
-        function(err, participant) {
+        _id: req.params.id,
+    },
+        function (err, participant) {
             if (err) res.send(err);
 
             res.json({

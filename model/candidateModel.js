@@ -24,6 +24,11 @@ var candidateSchema = mongoose.Schema({
         required: true,
         default: ""
     },
+    subject: {
+        type: String,
+        required: true,
+        default: ""
+    },
     total_vote: {
         type: Number,
         default: 0

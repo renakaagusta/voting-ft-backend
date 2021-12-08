@@ -76,6 +76,7 @@ exports.new = function(req, res) {
     candidate.number = req.body.number;
     candidate.image = "avatar.jpg";
     candidate.cv = " ";
+    candidate.subject = req.body.subject ? req.body.subject : "1";
     candidate.description.short = req.body.shortDescription;
     candidate.description.mission = req.body.missionDescription;
     candidate.description.vision = req.body.visionDescription;
@@ -92,6 +93,7 @@ exports.new = function(req, res) {
 
 // Handle view actions
 exports.view = function(req, res) {
+    console.log(req.params)
     Candidate.findById(req.params.id, function(err, candidate) {
         if (err) return res.send(err);
         return res.json({
@@ -109,6 +111,7 @@ exports.update = function(req, res) {
             $set: {
                 name: req.body.name,
                 number: req.body.number,
+                subject: req.body.subject ? req.body.subject : "1",
                 "description.short": req.body.shortDescription,
                 "description.vision": req.body.visionDescription,
                 "description.mission": req.body.missionDescription,
