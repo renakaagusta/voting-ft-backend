@@ -104,7 +104,7 @@ exports.indexByPage = async function (req, res) {
     null;
     console.log("..clientIp")
     console.log(clientIP)
-    Ip.find({ip: clientIP}, function(err, client){
+    Ip.find({ip: clientIP}, async function(err, client){
         console.log("..err")
         console.log(err)
         console.log("..client")
