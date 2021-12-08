@@ -31,9 +31,9 @@ var ip = [
 ];
 
 // Handle index actions
-exports.send = function(req, res) {
+exports.send = function (req, res) {
 
-    Setting.get(function(err, settings) {
+    Setting.get(function (err, settings) {
         if (err) {
             res.json({
                 status: "error",
@@ -49,32 +49,27 @@ exports.send = function(req, res) {
         );
 
         var transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true,
+            service: 'gmail',
+            host: 'smtp.gmail.com',
             auth: {
-                user: "exsternalpemirahimatipa@gmail.com",
-                pass: "Pemiraexsternal21*",
+                user: "kpusvuns@gmail.com",
+                pass: "Kpusvuns11",
             },
         });
 
         var mailOptions = {
-            from: setting.email.email,
+            from: "kpusvuns@gmail.com",
             to: req.body.to,
-            subject: "PEMIRA HIMATIPA UGM 2021",
+            subject: "PEMILU SV UNS 2021",
             html: "<h1>Halo " +
                 req.body.name +
-                "</h1><p>Kami mengundang anda untuk mengikuti PEMIRA HIMATIPA UGM 2021. Berikut kami lampirkan kartu pemilihan anda beserta dengan tata cara pemilihan.</p>",
-            attachments: [{
-                    filename: "Kartu Pemilihan_" + req.body.name + "_" + req.body.nim + ".png",
+                "</h1><p>Kami mengundang anda untuk mengikuti PEMILU SV UNS 2021. Berikut kami lampirkan kartu pemilihan yang diperlukan untuk melakukan pemilihan.</p>",
+                attachments: [{
+                    filename: "Kartu Pemilihan_" + req.body.name + ".png",
                     content: votingCardImage,
                 },
-                {
-                    filename: "Tata Cara Pemilihan PEMIRA HIMATIPA UGM 2021.pdf",
-                    contentType: "application/pdf",
-                    path: "https://voting-fib-backend.herokuapp.com//procedure.pdf",
-                },
             ],
+
         };
 
         transporter.sendMail(mailOptions, (err, info) => {
@@ -84,13 +79,13 @@ exports.send = function(req, res) {
             if (err) return res.status(500).json(err);
 
             Participant.findOneAndUpdate({
-                    _id: req.body.participantId,
-                }, {
-                    $set: {
-                        email_at: new Date(),
-                    },
+                _id: req.body.participantId,
+            }, {
+                $set: {
+                    email_at: new Date(),
                 },
-                function(err, participant) {
+            },
+                function (err, participant) {
                     if (err) return res.status(500).send(err);
 
                     return res.json({
