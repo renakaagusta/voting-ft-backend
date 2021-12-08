@@ -114,8 +114,8 @@ function escapeRegExp(string) {
 
 // Handle view actions
 exports.view = function (req, res) {
-    if (req.params.id.length < 50) {
-        console.log("..oops")
+    console.log(req.params.id.length)
+    if (req.params.id.length < 30) {
         const id = mongoose.Types.ObjectId(req.params.id)
         Participant.findById(id, function (err, participant) {
             console.log(req.params.id)
