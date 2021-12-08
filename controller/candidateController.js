@@ -63,7 +63,7 @@ exports.index = function(req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if(client) {
+        if(client.length > 0) {
 
             Candidate.get(function(err, candidates) {
                 if (err) {
