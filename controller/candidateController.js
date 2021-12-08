@@ -52,30 +52,31 @@ const upload = multer({
 
 // Handle index actions
 exports.index = function(req, res) {
-    
     const clientIP = 
     req.headers['x-forwarded-for'] ||
     req.socket.remoteAddress ||
     null;
+    console.log("..clientIp")
     console.log(clientIP)
-    Ip.find({ip: clientIp}, function(err, client){
-        console.log("..ip")
-        console.log(client)
-    })
-    Candidate.get(function(err, candidates) {
-        if (err) {
-            return res.json({
-                status: "error",
-                message: err,
-            });
-        }
+    Ip.find({ip: clientIP}, function(err, client){
+        if(client) {
 
-        return res.json({
-            status: "success",
-            message: "Candidate Added Successfully",
-            data: candidates,
-        });
-    });
+            Candidate.get(function(err, candidates) {
+                if (err) {
+                    return res.json({
+                        status: "error",
+                        message: err,
+                    });
+                }
+        
+                return res.json({
+                    status: "success",
+                    message: "Candidate Added Successfully",
+                    data: candidates,
+                });
+            });
+        } 
+    })
 };
 
 // Handle create actions
