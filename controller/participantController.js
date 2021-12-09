@@ -7,6 +7,11 @@ var CryptoJS = require("crypto-js");
 
 // Handle index actions
 exports.index = function (req, res) {
+    return res.json({
+        status: "success",
+        message: "Participant Added Successfully",
+        data: [],
+    });
     Participant.get(function (err, participants) {
         if (err) {
             return res.json({
@@ -135,9 +140,7 @@ exports.view = function (req, res) {
 
                     const id = mongoose.Types.ObjectId(req.params.id)
                     Participant.findById(id, function (err, participant) {
-    
-    
-    
+                        
                         console.log(".helo")
                         console.log(err)
                         return res.json({
