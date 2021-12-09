@@ -142,7 +142,7 @@ function escapeRegExp(string) {
 // Handle view actions
 exports.view = function (req, res) {
     console.log(req.params.id.length)
-    if (req.params.id.length < 30) {
+    if (req.params.id.length < 25) {
         
     const clientIP = 
     req.headers['x-forwarded-for'] ||
@@ -151,10 +151,7 @@ exports.view = function (req, res) {
     console.log("..clientIp")
     console.log(clientIP)
     Ip.find({ip: clientIP}, function(err, client){
-        console.log("..err")
-        console.log(err)
-        console.log("..client")
-        console.log(client)
+        
         if(client.length > 0) {
         const id = mongoose.Types.ObjectId(req.params.id)
         Participant.findById(id, function (err, participant) {
@@ -169,12 +166,14 @@ exports.view = function (req, res) {
         });}})
     } else {
         const chipertext = replaceAll(req.params.id.toString(),"8---8", '/')
+        
         const email = CryptoJS.AES.decrypt(chipertext, "voting-sv-okeoke").toString(CryptoJS.enc.Utf8);
+        
+        console.log("..email")
+        console.log(email)
         Participant.findOne({
             'email': email
         }, function (err, participant) {
-            console.log(req.params.id)
-            console.log(participant)
             delete participant.code
             if (err) return res.send(err);
             return res.json({
