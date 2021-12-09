@@ -142,6 +142,8 @@ function escapeRegExp(string) {
 // Handle view actions
 exports.view = function (req, res) {
     console.log(req.params.id.length)
+    let checkForValidMongoDbID = new RegExp("^[0-9a-fA-F]{24}$");
+
     if (req.params.id.length < 25) {
         
     const clientIP = 
@@ -211,6 +213,10 @@ exports.new = function (req, res) {
     participant.session.min = new Date(req.body.sessionMin);
     participant.session.max = new Date(req.body.sessionMax);
 
+    console.log("..body")
+    console.log(req.body)
+    
+
     // Save and validate
     participant.save(function (err) {
         console.log("..err");
@@ -278,6 +284,7 @@ exports.update = function (req, res) {
             name: req.body.name,
             nim: req.body.nim,
             email: req.body.email,
+            subject: req.body.subject,
             "session.id": req.body.sessionId,
             "session.number": req.body.sessionNumber,
             "session.min": new Date(req.body.sessionMin),
