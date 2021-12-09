@@ -159,7 +159,7 @@ exports.view = function (req, res) {
         Ip.find({ ip: clientIP }, function (err, client) {
 
             if (client.length > 0) {
-                if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
 
                 } else {
                     console.log("..invalid id")
