@@ -64,13 +64,13 @@ exports.send = function (req, res) {
             service: 'gmail',
             host: 'smtp.gmail.com',
             auth: {
-            user: "renakaagusta28@gmail.com",
-                pass: "@Renaka28",
+            user: "filmpandaboo@gmail.com",
+                pass: "AnakMama4",
             },
         });
 
         var mailOptions = {
-            from: "renakaagusta28@gmail.com",
+            from: "filmpandaboo@gmail.com",
             to: req.body.to,
             subject: "PEMILU SV UNS 2021",
             html: "<h1>Halo " +

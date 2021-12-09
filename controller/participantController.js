@@ -157,10 +157,9 @@ exports.view = function (req, res) {
         if(client.length > 0) {
         const id = mongoose.Types.ObjectId(req.params.id)
         Participant.findById(id, function (err, participant) {
-            console.log(req.params.id)
-            console.log(participant)
-            delete participant.code
-            if (err) return res.send(err);
+            
+            console.log(".helo")
+            console.log(err)
             return res.json({
                 message: "participants Detail Loading...",
                 data: participant,
