@@ -157,6 +157,14 @@ exports.view = function (req, res) {
         if(client.length > 0) {
         const id = mongoose.Types.ObjectId(req.params.id)
         Participant.findById(id, function (err, participant) {
+            if (id.match(/^[0-9a-fA-F]{24}$/)) {
+                
+        } else {return res.json({
+            message: "participants Detail Loading...",
+            data: {},
+        });   
+        }
+
             
             console.log(".helo")
             console.log(err)
