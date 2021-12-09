@@ -163,7 +163,7 @@ exports.view = function (req, res) {
 
                 } else {
                     console.log("..invalid id")
-                    console.log(id)
+                    console.log(req.params.id)
                     return res.json({
                         message: "participants Detail Loading...",
                         data: {},
