@@ -51,23 +51,16 @@ const upload = multer({
 }).single("file");
 
 // Handle index actions
-exports.index = function (req, res) {
+exports.index = async function (req, res) {
+    var candidates = await Candidate.find()
+    .sort({ number: 1 })
+    .exec();
 
-    Candidate.get(function (err, candidates) {
-        if (err) {
-            return res.json({
-                status: "error",
-                message: err,
-            });
-        }
-
-        return res.json({
-            status: "success",
-            message: "Candidate Added Successfully",
-            data: candidates,
-        });
+    return res.json({
+        status: "success",
+        message: "Candidate Added Successfully",
+        data: candidates,
     });
-
 };
 
 // Handle create actions
