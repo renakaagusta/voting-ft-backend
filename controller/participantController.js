@@ -130,9 +130,7 @@ exports.view = function (req, res) {
             req.headers['x-forwarded-for'] ||
             req.socket.remoteAddress ||
             null;
-        console.log("..clientIp")
-        console.log(clientIP)
-
+            
         if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
             const id = mongoose.Types.ObjectId(req.params.id)
             Participant.findById(id, function (err, participant) {
