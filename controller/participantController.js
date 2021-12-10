@@ -34,7 +34,7 @@ exports.index = function (req, res) {
 
 // Handle search actions
 exports.search = function (req, res) {
-    
+
     const clientIP =
         req.headers['x-forwarded-for'] ||
         req.socket.remoteAddress ||
@@ -122,7 +122,7 @@ function replaceAll(str, match, replacement) {
 // Handle view actions
 exports.view = function (req, res) {
     console.log(req.params.id.length)
-    
+
 
     if (req.params.id.length < 25) {
 
@@ -132,46 +132,44 @@ exports.view = function (req, res) {
             null;
         console.log("..clientIp")
         console.log(clientIP)
-        Ip.find({ ip: clientIP }, function (err, client) {
 
-            if (client.length > 0) {
-                if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-                    const id = mongoose.Types.ObjectId(req.params.id)
-                    Participant.findById(id, function (err, participant) {
-                        
-                        console.log(".helo")
-                        console.log(err)
+        if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+            const id = mongoose.Types.ObjectId(req.params.id)
+            Participant.findById(id, function (err, participant) {
+
+                console.log(".helo")
+                console.log(err)
+                return res.json({
+                    message: "participants Detail Loading...",
+                    data: participant,
+                });
+            });
+        } else {
+            Participant.find({
+                name: {
+                    $regex: req.params.id,
+                },
+            },
+                function (err, participants) {
+                    if (err) {
                         return res.json({
-                            message: "participants Detail Loading...",
-                            data: participant,
+                            status: "error",
+                            message: err,
                         });
+                    }
+
+                    participants = [].concat(participants).reverse();
+
+                    return res.json({
+                        status: "success",
+                        message: "Participant Added Successfully",
+                        data: participants,
                     });
-                } else {
-                    Participant.find({
-                        name: {
-                            $regex: req.params.id,
-                        },
-                    },
-                        function (err, participants) {
-                            if (err) {
-                                return res.json({
-                                    status: "error",
-                                    message: err,
-                                });
-                            }
-        
-                            participants = [].concat(participants).reverse();
-        
-                            return res.json({
-                                status: "success",
-                                message: "Participant Added Successfully",
-                                data: participants,
-                            });
-                        }
-                    );
                 }
-            }
-        })
+            );
+        }
+
+
     } else {
         const chipertext = replaceAll(req.params.id.toString(), "8---8", '/')
 
@@ -184,7 +182,7 @@ exports.view = function (req, res) {
         }, function (err, participant) {
             console.log("..error participant")
             console.log(err)
-            if(participant) delete participant.code
+            if (participant) delete participant.code
             if (err) return res.send(err);
             return res.json({
                 message: "participants Detail Loading...",
