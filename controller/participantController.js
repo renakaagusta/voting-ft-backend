@@ -34,8 +34,7 @@ exports.index = function (req, res) {
 
 // Handle search actions
 exports.search = function (req, res) {
-
-
+    
     const clientIP =
         req.headers['x-forwarded-for'] ||
         req.socket.remoteAddress ||
@@ -137,7 +136,6 @@ exports.view = function (req, res) {
 
             if (client.length > 0) {
                 if (req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
-
                     const id = mongoose.Types.ObjectId(req.params.id)
                     Participant.findById(id, function (err, participant) {
                         
@@ -184,7 +182,9 @@ exports.view = function (req, res) {
         Participant.findOne({
             'email': email
         }, function (err, participant) {
-            delete participant.code
+            console.log("..error participant")
+            console.log(err)
+            if(participant) delete participant.code
             if (err) return res.send(err);
             return res.json({
                 message: "participants Detail Loading...",
