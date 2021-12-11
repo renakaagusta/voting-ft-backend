@@ -50,29 +50,44 @@ exports.announcement = function(req, res) {
 
 // Handle resume actions
 exports.outline = function(req, res) {
-    var outline = {
-        participant: 0,
-        participantVoted: 0,
-        candidate: 0,
-        session: 0,
-    };
+    
+    const clientIP = 
+    req.headers['x-forwarded-for'] ||
+    req.socket.remoteAddress ||
+    null;
+    console.log("..clientIp")
+    console.log(clientIP)
+    Ip.find({ip: clientIP}, function(err, client){
+        console.log("..err")
+        console.log(err)
+        console.log("..client")
+        console.log(client)
+        if(client.length > 0) {
 
-    Participant.find({}, function(err, participants) {
-        if (participants.length != 0) {
-            outline.participant = participants.length;
-            participants.forEach(function(participant) {
-                if (participant.voting.time != null) outline.participantVoted++;
-            });
-            Candidate.find({}, function(err, candidates) {
-                if (candidates.length != 0) outline.candidate = candidates.length;
-                Session.find({}, function(err, sessions) {
-                    if (sessions.length != 0) outline.session = sessions.length;
-
-                    res.json({
-                        data: outline,
+            var outline = {
+                participant: 0,
+                participantVoted: 0,
+                candidate: 0,
+                session: 0,
+            };
+        
+            Participant.find({}, function(err, participants) {
+                if (participants.length != 0) {
+                    outline.participant = participants.length;
+                    participants.forEach(function(participant) {
+                        if (participant.voting.time != null) outline.participantVoted++;
                     });
-                });
+                    Candidate.find({}, function(err, candidates) {
+                        if (candidates.length != 0) outline.candidate = candidates.length;
+                        Session.find({}, function(err, sessions) {
+                            if (sessions.length != 0) outline.session = sessions.length;
+        
+                            res.json({
+                                data: outline,
+                            });
+                        });
+                    });
+                }
             });
-        }
-    });
+        }})
 };
