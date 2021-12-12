@@ -7,11 +7,7 @@ var CryptoJS = require("crypto-js");
 
 // Handle index actions
 exports.index = function (req, res) {
-    return res.json({
-        status: "success",
-        message: "Participant Added Successfully",
-        data: [],
-    });
+    
     Participant.get(function (err, participants) {
         if (err) {
             return res.json({
@@ -22,7 +18,11 @@ exports.index = function (req, res) {
 
         participants = [].concat(participants).reverse();
 
-        participants.forEach(function (participant) { delete participant.code });
+        participants.forEach(function (participant) { 
+            delete participant.code;
+            delete participant.name;
+            delete participant.email;
+         });
 
         return res.json({
             status: "success",
