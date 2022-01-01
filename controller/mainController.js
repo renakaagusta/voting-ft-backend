@@ -16,7 +16,7 @@ exports.login = function(req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if(client.length > 0) {
+        //if(client.length > 0) {
     console.log(req.body)
     Setting.find({
             "authentication.username": req.body.username,
@@ -35,7 +35,8 @@ exports.login = function(req, res) {
                 });
             }
         }
-    );}})
+    );//}
+})
 };
 
 // Handle announcement actions
@@ -62,7 +63,7 @@ exports.outline = function(req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if(client.length > 0) {
+        //if(client.length > 0) {
 
             var outline = {
                 participant: 0,
@@ -89,5 +90,6 @@ exports.outline = function(req, res) {
                     });
                 }
             });
-        }})
+        //}
+    })
 };

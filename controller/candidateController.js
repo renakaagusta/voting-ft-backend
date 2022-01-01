@@ -77,7 +77,7 @@ exports.new = function (req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if (client.length > 0) {
+        //if (client.length > 0) {
 
             var candidate = new Candidate();
             candidate.type = req.body.type;
@@ -98,7 +98,7 @@ exports.new = function (req, res) {
                     data: candidate,
                 });
             });
-        }
+        //}
     })
 };
 
@@ -128,7 +128,7 @@ exports.update = function (req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if (client.length > 0) {
+        //if (client.length > 0) {
             id = req.params.id;
             Candidate.findOneAndUpdate({ _id: id }, {
                 $set: {
@@ -159,7 +159,7 @@ exports.update = function (req, res) {
                         data: err,
                     });
                 });
-        }
+        //}
     })
 };
 
@@ -177,7 +177,7 @@ exports.upload = function (req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if (client.length > 0) {
+        //if (client.length > 0) {
             type = req.body.type;
             id = req.params.id;
 
@@ -201,7 +201,7 @@ exports.upload = function (req, res) {
                     }
                 );
             });
-        }
+        //}
     })
 };
 
@@ -241,7 +241,7 @@ exports.delete = function (req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if (client.length > 0) {
+        //if (client.length > 0) {
             Candidate.remove({
                 _id: req.params.id,
             },
@@ -253,6 +253,6 @@ exports.delete = function (req, res) {
                     });
                 }
             );
-        }
+        //}
     })
 };

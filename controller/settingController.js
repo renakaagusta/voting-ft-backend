@@ -57,7 +57,7 @@ exports.index = function(req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if(client.length > 0) {
+        //if(client.length > 0) {
     console.log("ip: " + JSON.stringify(ip));
     Setting.get(function(err, settings) {
         if (err) {
@@ -71,7 +71,8 @@ exports.index = function(req, res) {
             message: "Setting Added Successfully",
             data: settings,
         });
-    });}})
+    });//}
+})
 };
 
 // Handle create actions
@@ -87,7 +88,7 @@ exports.new = function(req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if(client.length > 0) {
+        //if(client.length > 0) {
     var setting = new Setting();
     setting.email.email = req.body.emailEmail;
     setting.email.password = req.body.emailPassword;
@@ -105,7 +106,9 @@ exports.new = function(req, res) {
             message: "New Setting Created!",
             data: setting,
         });
-    });}})
+    });
+//}
+})
 };
 
 // Handle view actions
@@ -122,14 +125,16 @@ exports.view = function(req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if(client.length > 0) {
+        //if(client.length > 0) {
     Setting.findById(req.params.id, function(err, setting) {
         if (err) res.send(err);
         res.json({
             message: "settings Detail Loading...",
             data: setting,
         });
-    });}})
+    });
+//}
+})
 };
 
 // Handle update actions

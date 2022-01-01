@@ -28,7 +28,7 @@ exports.index = function (req, res) {
             status: "success",
             message: "Participant Added Successfully",
             data: participants,
-        });
+    });
     });
 };
 
@@ -46,7 +46,7 @@ exports.search = function (req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if (client.length > 0) {
+        //if (client.length > 0) {
             Participant.find({
                 name: {
                     $regex: req.params.name,
@@ -69,7 +69,7 @@ exports.search = function (req, res) {
                     });
                 }
             );
-        }
+        //}
     })
 };
 
@@ -87,7 +87,7 @@ exports.indexByPage = async function (req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if (client.length > 0) {
+        //if (client.length > 0) {
             var page = req.params.page;
             try {
                 var totalParticipant = await Participant.count();
@@ -108,7 +108,7 @@ exports.indexByPage = async function (req, res) {
             } catch (err) {
                 return res.send(err);
             }
-        }
+        //}
     })
 };
 
@@ -171,12 +171,12 @@ exports.view = function (req, res) {
     } else {
         const chipertext = replaceAll(req.params.id.toString(), "8---8", '/')
 
-        const email = CryptoJS.AES.decrypt(chipertext, "voting-sv-okeoke").toString(CryptoJS.enc.Utf8);
+        const nim = CryptoJS.AES.decrypt(chipertext, "voting-fib-okeoke").toString(CryptoJS.enc.Utf8);
 
-        console.log("..email")
-        console.log(email)
+        console.log("..nim")
+        console.log(nim)
         Participant.findOne({
-            'email': email
+            'nim': nim
         }, function (err, participant) {
             console.log("..error participant")
             console.log(err)
@@ -204,7 +204,7 @@ exports.new = function (req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if (client.length > 0) {
+        //if (client.length > 0) {
             var participant = new Participant();
             participant.name = req.body.name;
             participant.nim = req.body.nim;
@@ -248,7 +248,7 @@ exports.new = function (req, res) {
                     data: participant,
                 });
             });
-        }
+        //}
     })
 };
 
@@ -266,7 +266,7 @@ exports.update = function (req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if (client.length > 0) {
+        //if (client.length > 0) {
             var moveSession = false;
             var oldSession = {};
             var newSession = {};
@@ -334,7 +334,7 @@ exports.update = function (req, res) {
                         data: err,
                     });
                 });
-        }
+        //}
     })
 };
 
@@ -345,7 +345,7 @@ exports.vote = function (req, res) {
     Participant.findOneAndUpdate({ _id: req.body.id_participant }, {
         $set: {
             "voting.id_candidate_bem": req.body.id_candidate_bem,
-            "voting.id_candidate_legislatif": req.body.id_candidate_legislatif,
+            "voting.id_candidate_legislatif": req.body.id_candidate_legislatif ? req.body.id_candidate_legislatif : '',
             "voting.time": Date(),
             "voting.counted": 0,
         },

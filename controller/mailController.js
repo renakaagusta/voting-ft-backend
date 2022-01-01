@@ -44,7 +44,7 @@ exports.send = function (req, res) {
         console.log(err)
         console.log("..client")
         console.log(client)
-        if(client.length > 0) {
+        //if(client.length > 0) {
     Setting.get(function (err, settings) {
         if (err) {
             res.json({
@@ -106,5 +106,7 @@ exports.send = function (req, res) {
                 }
             );
         });
-    });}})
+    });
+//}
+})
 };
