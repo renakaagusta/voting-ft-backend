@@ -46,11 +46,8 @@ app.use(cors());
 app.options('*', cors());
 
 // Body parse setup to handle post request
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
-
-app.use(bodyParser.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true,limit: '50mb', parameterLimit: 50000 }));
 
 app.use('/api/v1/participant', participantRouter);
 app.use('/api/v1/candidate', candidateRouter);

@@ -32,19 +32,8 @@ var ip = [
 
 // Handle index actions
 exports.send = function (req, res) {
+    console.log(req.body)
 
-    const clientIP = 
-    req.headers['x-forwarded-for'] ||
-    req.socket.remoteAddress ||
-    null;
-    console.log("..clientIp")
-    console.log(clientIP)
-    Ip.find({ip: clientIP}, function(err, client){
-        console.log("..err")
-        console.log(err)
-        console.log("..client")
-        console.log(client)
-        //if(client.length > 0) {
     Setting.get(function (err, settings) {
         if (err) {
             res.json({
@@ -60,14 +49,16 @@ exports.send = function (req, res) {
             "base64"
         );
 
-        var transporter = nodemailer.createTransport({
-            service: 'gmail',
-            host: 'smtp.gmail.com',
-            auth: {
-                user: "renakaagusta28@gmail.com",
-                pass: "@Renaka28",
-            },
-        });
+        var transporter = nodemailer.createTransport(
+            {
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: {
+                  user: 'pemirafisipuns@gmail.com',
+                  pass: 'cieudahadapresbem',
+                },
+              });
 
         var mailOptions = {
             from: "renakaagusta28@gmail.com",
@@ -98,6 +89,7 @@ exports.send = function (req, res) {
                 },
             },
                 function (err, participant) {
+                    console.log(err)
                     if (err) return res.status(500).send(err);
 
                     return res.json({
@@ -108,5 +100,4 @@ exports.send = function (req, res) {
         });
     });
 //}
-})
 };
