@@ -26,7 +26,7 @@ let bodyParser = require('body-parser');
 let mongoose = require('mongoose');
 
 // Connect to mongoose and set connection variable 
-mongoose.connect('mongodb+srv://root:root@cluster0.rjs6o.mongodb.net/voting?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://root:root@cluster0.ngkmi.mongodb.net/voting?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 
 var app = express();
