@@ -63,10 +63,10 @@ exports.send = function (req, res) {
         var mailOptions = {
             from: "renakaagusta28@gmail.com",
             to: req.body.to,
-            subject: "PEMILU FISIP UNS 2022",
+            subject: "PEMILU HIMATIPA UGM 2022",
             html: "<h1>Halo " +
                 req.body.name +
-                "</h1><p>Kami mengundang anda untuk mengikuti PEMILU FISIP UNS 2022. Berikut kami lampirkan kartu pemilihan yang diperlukan untuk melakukan pemilihan.</p>",
+                "</h1><p>Kami mengundang anda untuk mengikuti PEMILU HIMATIPA UGM 2022. Berikut kami lampirkan kartu pemilihan yang diperlukan untuk melakukan pemilihan.</p>",
                 attachments: [{
                     filename: "Kartu Pemilihan_" + req.body.name + ".png",
                     content: votingCardImage,

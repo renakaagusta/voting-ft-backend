@@ -22,11 +22,12 @@ cloudinary.config({
 
 // Import body parse
 let bodyParser = require('body-parser');
+
 // Import mongoose
 let mongoose = require('mongoose');
 
 // Connect to mongoose and set connection variable 
-mongoose.connect('mongodb+srv://root:root@cluster0.ngkmi.mongodb.net/voting?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb+srv://root:root@voting.btyopfc.mongodb.net/voting', { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 
 var app = express();
