@@ -32,6 +32,7 @@ var ip = [
 
 // Handle index actions
 exports.send = function (req, res) {
+    console.log('req body')
     console.log(req.body)
 
     Setting.get(function (err, settings) {
@@ -55,13 +56,13 @@ exports.send = function (req, res) {
                 port: 465,
                 secure: true,
                 auth: {
-                  user: 'pemirafisipuns@gmail.com',
-                  pass: 'cieudahadapresbem',
+                  user: 'pemirahimatipa@gmail.com',
+                  pass: 'fdjleuwqeurildjc',
                 },
               });
 
         var mailOptions = {
-            from: "renakaagusta28@gmail.com",
+            from: "pemirahimatipa@gmail.com",
             to: req.body.to,
             subject: "PEMILU HIMATIPA UGM 2022",
             html: "<h1>Halo " +
@@ -74,6 +75,8 @@ exports.send = function (req, res) {
             ],
 
         };
+
+        console.log('--------EMAIL----------')
 
         transporter.sendMail(mailOptions, (err, info) => {
             console.log("setting: " + JSON.stringify(setting));
